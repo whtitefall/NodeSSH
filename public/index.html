@@ -1,0 +1,61 @@
+<!doctype html>
+  <html>
+    <head>
+
+
+    </head>
+    <body>
+      <div id="terminal"></div>
+
+      <link rel="stylesheet" href="xterm/xterm.css" />
+      <script src="xterm/xterm.js"></script>
+      <script src="/socket.io/socket.io.js"></script>
+      <script> 
+
+      var socket = io();
+
+      socket.on('connect',function(){
+        console.log('connect to server')
+      })
+
+
+      var term = new Terminal({ cursorBlink: true });
+      term.open(document.getElementById('terminal'));
+      //term.onData(data=> term.write(data.replace(/\r/g, '\n\r')))
+      term.write('\r\n> ');
+
+      var line = ''
+      term.onKey(e => {
+            const printable = !e.domEvent.altKey && !e.domEvent.altGraphKey && !e.domEvent.ctrlKey && !e.domEvent.metaKey;
+
+            if (e.domEvent.keyCode === 13) {
+                line = line.trim()
+
+                socket.emit('command',{
+                  command: line 
+                }, function(res){
+                  console.log(res)
+                })
+
+
+                term.write('\r\n> ');
+                line = ''
+            } else if (e.domEvent.keyCode === 8) {
+                // Do not delete the prompt
+                if (term._core.buffer.x >= 2) {
+                    line = line.slice(0,-1)
+                    term.write('\b \b');
+                }
+            } else if (printable) {
+                line += e.key 
+                term.write(e.key);
+            }
+        });
+  
+
+
+
+
+      </script>
+    </body>
+  </html>
