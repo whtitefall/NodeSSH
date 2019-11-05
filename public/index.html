@@ -19,10 +19,18 @@
       })
 
 
+
       var term = new Terminal({ cursorBlink: true });
       term.open(document.getElementById('terminal'));
       //term.onData(data=> term.write(data.replace(/\r/g, '\n\r')))
       term.write('\r\n> ');
+
+
+      socket.on('cresult',function(result){
+        console.log(result.data)
+        console.log(typeof result)
+        term.write(result.data)
+      })
 
       var line = ''
       term.onKey(e => {

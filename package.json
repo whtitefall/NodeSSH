@@ -4,7 +4,8 @@
   "description": "",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
@@ -17,5 +18,8 @@
     "socket.io": "^2.3.0",
     "ssh2": "^0.8.5",
     "xterm": "^4.2.0"
+  },
+  "engines": {
+    "node": "10.16.3"
   }
 }

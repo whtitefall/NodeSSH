@@ -39,14 +39,7 @@ conn.on('ready',()=>{
 
 
   //var rl = readline.createInterface(process.stdin, process.stdout)
-  conn.shell(function(err, stream) {
-    if (err) throw err;
-    stream.on('close', function() {
-      console.log('Stream :: close');
-      conn.end();
-    }).on('data', function(data) {
-      console.log('OUTPUT: ' + data);
-    })
+
 
 
   io.on('connection',(socket)=>{
@@ -54,24 +47,41 @@ conn.on('ready',()=>{
 
     console.log("Connection success !")
 
-    socket.on('command',(text,callback)=>{
- 
-      callback('Server received command')
-      stream.write(text.command + '\n')
+    conn.shell(function(err, stream) {
+      if (err) throw err;
+
+      socket.on('command',(text,callback)=>{
+        callback('Server received command')
+        stream.write(text.command + '\n')
+      })
+  
+
+      stream.on('close', function() {
+        console.log('Stream :: close');
+        conn.end();
+      }).on('data', function(data) {
+        console.log('OUTPUT: ' + data);
+
+        socket.emit('cresult',{
+          data:data.toString('binary')
+        })
+       
+      })
 
     })
+
 
 
     socket.on('disconnect',()=>{
       console.log('Socket disconnect !')
     })
 
-  })
+  }) // here 
   
 
   })
 
-})
+
 
 
 
