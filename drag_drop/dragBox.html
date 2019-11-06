@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" type="text/css" href="drag.css">
+
+  <title>Document</title>
+</head>
+<body>
+
+
+
+  
+  <div class="dropzone" id ="dropzone">  
+    
+    <input type="file" id="my_file"> 
+  
+  </div>
+
+
+
+
+  <script>
+    var fired = function(){
+      var dropzone = document.getElementById('dropzone'); 
+
+      var upload = function(files){
+        var formData = new FormData(),
+          xhr  = new XMLHttpRequest(),
+          x; 
+          for(x = 0 ; x< files.length ; x = x+1 ){
+            formData.append('file[]',files[x])
+          }
+
+          xhr.onload = function(){
+            var data = this.responseText
+            console.log(data)
+          }
+          xhr.open('post',)
+          xhr.send()
+        }
+
+      dropzone.ondrop = function(e){
+        e.preventDefault() // prevent default open image action
+        this.className = 'dropzone'
+        upload(e.dataTransfer.files)
+
+      }
+
+      dropzone.ondragover = function(){
+        this.className = 'dropzone dragover'
+        return false 
+      }
+
+      dropzone.ondragleave = function(){
+        this.className = 'dropzone'
+        return false 
+      }
+    }
+
+   // fired()
+  </script>
+
+
+</body>
+</html>
